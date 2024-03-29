@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View,Text } from "react-native";
 import { GlobalStyles } from "../../constants/styles";
 
 function ExpenseItem({ description, amount, date }) {
@@ -7,7 +7,7 @@ function ExpenseItem({ description, amount, date }) {
       <View style={styles.expenseItem}>
         <View>
           <Text style={[styles.textBase,styles.description]}>{description}</Text>
-          <Text style={styles.textBase}>{date}</Text>
+          <Text style={styles.textBase}>{date.toString()}</Text>
         </View>
         <View style={styles.amountContainer}>
           <Text style={styles.amount}>{amount}</Text>
