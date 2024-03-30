@@ -27,7 +27,14 @@ function ExpensesOverview() {
         headerTintColor: "white",
         tabBarStyle: { backgroundColor: GlobalStyles.colors.primary500 },
         tabBarActiveTintColor: GlobalStyles.colors.accent500,
-        headerRight:({tintColor})=><IconButton icon="add" size={24} color={tintColor} onPress={expensePressHandler} />
+        headerRight: ({ tintColor }) => (
+          <IconButton
+            icon="add"
+            size={24}
+            color={tintColor}
+            onPress={expensePressHandler}
+          />
+        ),
       }}
     >
       <BottomTabs.Screen
@@ -61,13 +68,18 @@ export default function App() {
     <>
       <StatusBar style="auto" />
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator
+          screenOptions={{
+            headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
+            headerTintColor: "white",
+          }}
+        >
           <Stack.Screen
             name="ExpensesOverview"
             component={ExpensesOverview}
             options={{ headerShown: false }}
           />
-          <Stack.Screen name="ManageExpense" component={ManageExpenses} />
+          <Stack.Screen name="ManageExpense" component={ManageExpenses} options={{presentation:'modal'}} />
         </Stack.Navigator>
       </NavigationContainer>
     </>
