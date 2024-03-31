@@ -24,6 +24,19 @@ function ManageExpense({ route, navigation }) {
     navigation.goBack(); //this will close the modal
   }
   function confirmHandler() {
+    if (isEditing) {
+      expenseContext.updateExpense(editedExpenseId, {
+        description: "Test!!!!",
+        amount: 29.99,
+        date: new Date("2022-05-20"),
+      });
+    } else {
+      expenseContext.addExpense({
+        description: "Test",
+        amount: 19.99,
+        date: new Date("2024-03-24"),
+      });
+    }
     navigation.goBack(); //this will close the modal
   }
   return (
