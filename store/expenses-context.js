@@ -92,13 +92,21 @@ function ExpenseContextProvider({ children }) {
   function addExpense({ expenseData }) {
     dispatch({ type: "ADD", payload: expenseData });
   }
-  function deleteExpense({ id}) {
+  function deleteExpense({ id }) {
     dispatch({ type: "DELETE", payload: id });
   }
   function updateExpense({ id, expenseData }) {
     dispatch({ type: "UPDATE", payload: { id: id, data: expenseData } });
   }
+  const value = {
+    expenses: expensesState,
+    addExpense: addExpense,
+    deleteExpense: deleteExpense,
+    updateExpense: updateExpense,
+  };
 
-  return <ExpenseContext.Provider>{children}</ExpenseContext.Provider>;
+  return (
+    <ExpenseContext.Provider value={value}>{children}</ExpenseContext.Provider>
+  );
 }
 export default ExpenseContextProvider;
