@@ -1,10 +1,12 @@
-import { useLayoutEffect } from "react";
+import { useContext, useLayoutEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import IconButton from "../components/UI/IconButton";
 import { GlobalStyles } from "../constants/styles";
 import Button from "../components/UI/Button";
+import { ExpenseContext } from "../store/expenses-context";
 
 function ManageExpense({ route, navigation }) {
+  const expenseContext = useContext(ExpenseContext);
   const editedExpenseId = route.params?.expenseId; //to check whether expense id is present or not
   const isEditing = !!editedExpenseId; //trick to convert into boolean
 
@@ -15,7 +17,8 @@ function ManageExpense({ route, navigation }) {
   }, [navigation, isEditing]);
 
   function deleteExpenseHandler() {
-    navigation.goBack();//this will close the modal
+    expenseContext.deleteExpense(editedExpenseId);
+    navigation.goBack(); //this will close the modal
   }
   function cancelHandler() {
     navigation.goBack(); //this will close the modal
@@ -63,13 +66,13 @@ const styles = StyleSheet.create({
     borderTopColor: GlobalStyles.colors.primary200,
     alignItems: "center",
   },
-  buttonsContainer:{
-    justifyContent:'center',
-    alignItems:'center',
-    flexDirection:'row',
+  buttonsContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
   },
-  button:{
-    marginHorizontal:8,
-    minWidth:120,
-  }
+  button: {
+    marginHorizontal: 8,
+    minWidth: 120,
+  },
 });

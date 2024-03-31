@@ -57,7 +57,7 @@ const DUMMY_EXPENSES = [
   },
 ];
 
-export const ExpenseContext = createContext({
+export const ExpenseContext = createContext({//this is the main function of context
   expenses: [],
   addExpense: ({ description, amount, date }) => {},
   deleteExpense: (id) => {},
@@ -69,7 +69,6 @@ function expensesReducer(state, action) {
     case "ADD":
       const id = new Date().toString() + Math.random().toString();
       return [{ ...action.payload, id: id }, ...state];
-
     case "UPDATE":
       const updatableExpenseIndex = state.findIndex(
         (expense) => expense.id === action.payload.id
@@ -80,24 +79,26 @@ function expensesReducer(state, action) {
       updatedExpenses[updatableExpenseIndex] = updatedItem;
       return updatedExpenses;
     case "DELETE":
-      return state.filter((expense) => expense.id !== action.payload.id);
+      return state.filter((expense) => expense.id !== action.payload);
     default:
       return state;
   }
 }
+function ExpensesContextProvider({ children }) {
+  const [expensesState, dispatch] = useReducer(expensesReducer, DUMMY_EXPENSES);
 
-function ExpenseContextProvider({ children }) {
-  const [expensesState, dispatch] = useReducer(expensesReducer, DUMMY_EXPENSES); //dummy expense will be used as intial value
-
-  function addExpense({ expenseData }) {
+  function addExpense(expenseData) {
     dispatch({ type: "ADD", payload: expenseData });
   }
-  function deleteExpense({ id }) {
+
+  function deleteExpense(id) {
     dispatch({ type: "DELETE", payload: id });
   }
-  function updateExpense({ id, expenseData }) {
+
+  function updateExpense(id, expenseData) {
     dispatch({ type: "UPDATE", payload: { id: id, data: expenseData } });
   }
+
   const value = {
     expenses: expensesState,
     addExpense: addExpense,
@@ -106,7 +107,10 @@ function ExpenseContextProvider({ children }) {
   };
 
   return (
-    <ExpenseContext.Provider value={value}>{children}</ExpenseContext.Provider>
+    <ExpenseContext.Provider value={value}>
+      {children}
+    </ExpenseContext.Provider>
   );
 }
-export default ExpenseContextProvider;
+
+export default ExpensesContextProvider;
