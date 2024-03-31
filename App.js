@@ -11,6 +11,7 @@ import AllExpenses from "./screens/AllExpenses";
 import { GlobalStyles } from "./constants/styles";
 import IconButton from "./components/UI/IconButton";
 import { useNavigation } from "@react-navigation/native";
+import ExpenseContextProvider from "./store/expenses-context";
 
 const Stack = createNativeStackNavigator();
 const BottomTabs = createBottomTabNavigator();
@@ -67,6 +68,7 @@ export default function App() {
   return (
     <>
       <StatusBar style="auto" />
+      <ExpenseContextProvider>
       <NavigationContainer>
         <Stack.Navigator
           screenOptions={{
@@ -82,6 +84,7 @@ export default function App() {
           <Stack.Screen name="ManageExpense" component={ManageExpenses} options={{presentation:'modal'}} />
         </Stack.Navigator>
       </NavigationContainer>
+      </ExpenseContextProvider>
     </>
   );
 }
