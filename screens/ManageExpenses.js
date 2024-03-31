@@ -14,9 +14,15 @@ function ManageExpense({ route, navigation }) {
     });
   }, [navigation, isEditing]);
 
-  function deleteExpenseHandler() {}
-  function cancelHandler() {}
-  function confirmHandler() {}
+  function deleteExpenseHandler() {
+    navigation.goBack();//this will close the modal
+  }
+  function cancelHandler() {
+    navigation.goBack(); //this will close the modal
+  }
+  function confirmHandler() {
+    navigation.goBack(); //this will close the modal
+  }
   return (
     <View style={styles.container}>
       <View style={styles.buttonsContainer}>
