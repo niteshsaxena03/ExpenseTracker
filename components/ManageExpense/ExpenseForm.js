@@ -3,9 +3,19 @@ import Input from "./Input";
 import { useState } from "react";
 
 function ExpenseForm() {
-  const [amountValue,setAmountValue]=useState('');{/*This will be used to track the entered amount*/}
-  function amountChangedHandler(enteredAmount) {
-    setAmountValue(enteredAmount);
+  const [inputValues, setInputValues] = useState({
+    amount: "",
+    date: "",
+    description: "",
+  });
+
+  function inputChangeHandler(inputIdentifier, enteredValue) {
+    setInputValues((currentInputValues) => {
+      return {
+        ...currentInputValues,
+        [inputIdentifier]: enteredValue,
+      };
+    });
   }
   return (
     <View style={styles.form}>
@@ -54,8 +64,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    color:'white',
-    textAlign:'center',
-    marginVertical:24,
+    color: "white",
+    textAlign: "center",
+    marginVertical: 24,
   },
 });
