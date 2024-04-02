@@ -1,8 +1,12 @@
 import { StyleSheet, Text, View } from "react-native";
 import Input from "./Input";
+import { useState } from "react";
 
 function ExpenseForm() {
-  function amountChangedHandler() {}
+  const [amountValue,setAmountValue]=useState('');{/*This will be used to track the entered amount*/}
+  function amountChangedHandler(enteredAmount) {
+    setAmountValue(enteredAmount);
+  }
   return (
     <View style={styles.form}>
       <Text style={styles.title}>Your Expense</Text>
