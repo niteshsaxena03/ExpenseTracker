@@ -42,15 +42,8 @@ function ManageExpense({ route, navigation }) {
   }
   return (
     <View style={styles.container}>
-    <ExpenseForm/>
-      <View style={styles.buttonsContainer}>
-        <Button onPress={cancelHandler} mode="flat" style={styles.button}>
-          Cancel
-        </Button>
-        <Button onPress={confirmHandler} style={styles.button}>
-          {isEditing ? "Update" : "Add"}
-        </Button>
-      </View>
+      <ExpenseForm onCancel={cancelHandler} submitButtonLabel={isEditing?'Update':'Add'}/>
+
       {/*we will use conditional rendering here*/}
       {isEditing && (
         <View style={styles.deleteContainer}>
@@ -81,13 +74,5 @@ const styles = StyleSheet.create({
     borderTopColor: GlobalStyles.colors.primary200,
     alignItems: "center",
   },
-  buttonsContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
-  },
-  button: {
-    marginHorizontal: 8,
-    minWidth: 120,
-  },
+  
 });
