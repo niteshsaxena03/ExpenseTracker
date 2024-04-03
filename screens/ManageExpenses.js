@@ -24,25 +24,21 @@ function ManageExpense({ route, navigation }) {
   function cancelHandler() {
     navigation.goBack(); //this will close the modal
   }
-  function confirmHandler() {
+  function confirmHandler(expenseData) {
     if (isEditing) {
-      expenseContext.updateExpense(editedExpenseId, {
-        description: "Test!!!!",
-        amount: 29.99,
-        date: new Date("2022-05-20"),
-      });
+      expenseContext.updateExpense(editedExpenseId, expenseData);
     } else {
-      expenseContext.addExpense({
-        description: "Test",
-        amount: 19.99,
-        date: new Date("2024-03-24"),
-      });
+      expenseContext.addExpense(expenseData);
     }
-    navigation.goBack(); //this will close the modal
+    navigation.goBack();
   }
   return (
     <View style={styles.container}>
-      <ExpenseForm onCancel={cancelHandler} submitButtonLabel={isEditing?'Update':'Add'}/>
+      <ExpenseForm
+        onCancel={cancelHandler}
+        submitButtonLabel={isEditing ? "Update" : "Add"}
+        onSubmit={confirmHandler}
+      />
 
       {/*we will use conditional rendering here*/}
       {isEditing && (
@@ -74,5 +70,4 @@ const styles = StyleSheet.create({
     borderTopColor: GlobalStyles.colors.primary200,
     alignItems: "center",
   },
-  
 });
