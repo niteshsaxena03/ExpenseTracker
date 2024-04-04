@@ -1,18 +1,21 @@
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { GlobalStyles } from "../../constants/styles";
 
-function Input({ label, textInputConfig ,style}) {
+function Input({ label, invalid, textInputConfig, style }) {
   {
     /*accepting props as an object*/
   }
   const inputStyles = [styles.input];
 
-  if(textInputConfig && textInputConfig.multiline){
+  if (textInputConfig && textInputConfig.multiline) {
     inputStyles.push(styles.inputMultiline);
   }
+  if(invalid){
+    inputStyles.push(styles.invalidInput);
+  }
   return (
-    <View style={[styles.inputContainer,style]}>
-      <Text style={styles.label}>{label}</Text>
+    <View style={[styles.inputContainer, style]}>
+      <Text style={[styles.label,invalid && styles.invalidLabel]}>{label}</Text>
       <TextInput {...textInputConfig} style={inputStyles} />
       {/*this is a way of putting value of props using an object*/}
     </View>
@@ -24,7 +27,6 @@ const styles = StyleSheet.create({
   inputContainer: {
     marginHorizontal: 4,
     marginVertical: 8,
- 
   },
   label: {
     fontSize: 12,
@@ -41,5 +43,11 @@ const styles = StyleSheet.create({
   inputMultiline: {
     minHeight: 100,
     textAlignVertical: "top",
+  },
+  invalidLabel: {
+    color: GlobalStyles.colors.error500,
+  },
+  invalidInput: {
+    backgroundColor:GlobalStyles.colors.error50,
   },
 });

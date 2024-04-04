@@ -3,6 +3,7 @@ import Input from "./Input";
 import { useState } from "react";
 import Button from "../UI/Button";
 import { getFormattedDate } from "../../utils/date";
+import { GlobalStyles } from "../../constants/styles";
 
 function ExpenseForm({ onCancel, onSubmit, submitButtonLabel, defaultValues }) {
   const [inputs, setInputs] = useState({
@@ -64,10 +65,10 @@ function ExpenseForm({ onCancel, onSubmit, submitButtonLabel, defaultValues }) {
     onSubmit(expenseData);
   }
 
-   const formIsInvalid =
-     !inputs.amount.isValid ||
-     !inputs.date.isValid ||
-     !inputs.description.isValid;
+  const formIsInvalid =
+    !inputs.amount.isValid ||
+    !inputs.date.isValid ||
+    !inputs.description.isValid;
 
   return (
     <View style={styles.form}>
@@ -76,6 +77,7 @@ function ExpenseForm({ onCancel, onSubmit, submitButtonLabel, defaultValues }) {
         <Input
           style={styles.rowInput}
           label="Amount"
+          invalid={!inputs.amount.isValid}
           textInputConfig={{
             keyboardType: "decimal-pad",
             onChangeText: inputChangeHandler.bind(this, "amount"),
@@ -85,6 +87,7 @@ function ExpenseForm({ onCancel, onSubmit, submitButtonLabel, defaultValues }) {
         <Input
           style={styles.rowInput}
           label="Date"
+          invalid={!inputs.date.isValid}
           textInputConfig={{
             placeholder: "YYYY-MM-DD",
             maxLength: 10,
@@ -95,6 +98,7 @@ function ExpenseForm({ onCancel, onSubmit, submitButtonLabel, defaultValues }) {
       </View>
       <Input
         label="Description"
+        invalid={!inputs.description.isValid}
         textInputConfig={{
           multiline: true,
           onChangeText: inputChangeHandler.bind(this, "description"),
@@ -102,7 +106,9 @@ function ExpenseForm({ onCancel, onSubmit, submitButtonLabel, defaultValues }) {
         }}
       />
       {formIsInvalid && (
-        <Text>Invalid Input-Please recheck the values that you entered</Text>
+        <Text style={styles.errorText}>
+          Invalid Input-Please recheck the values that you entered
+        </Text>
       )}
       <View style={styles.buttonsContainer}>
         <Button onPress={onCancel} mode="flat" style={styles.button}>
@@ -128,6 +134,12 @@ const styles = StyleSheet.create({
   form: {
     marginTop: 40,
   },
+  errorText: {
+    textAlign: "center",
+    color: GlobalStyles.colors.error500,
+    margin: 8,
+    fontWeight: "bold",
+  },
   title: {
     fontSize: 24,
     fontWeight: "bold",
@@ -144,4 +156,5 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
     minWidth: 120,
   },
+  
 });
