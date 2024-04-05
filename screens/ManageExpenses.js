@@ -5,7 +5,7 @@ import { GlobalStyles } from "../constants/styles";
 import Button from "../components/UI/Button";
 import { ExpenseContext } from "../store/expenses-context";
 import ExpenseForm from "../components/ManageExpense/ExpenseForm";
-import { storeExpense } from "../utils/http";
+import { deleteExpense, storeExpense, updateExpense } from "../utils/http";
 
 function ManageExpense({ route, navigation }) {
   const expenseContext = useContext(ExpenseContext);
@@ -21,8 +21,9 @@ function ManageExpense({ route, navigation }) {
     });
   }, [navigation, isEditing]);
 
-  function deleteExpenseHandler() {
+  async function deleteExpenseHandler() {
     expenseContext.deleteExpense(editedExpenseId);
+    await deleteExpense(editedExpenseId);
     navigation.goBack(); //this will close the modal
   }
   function cancelHandler() {
@@ -31,9 +32,10 @@ function ManageExpense({ route, navigation }) {
   async function confirmHandler(expenseData) {
     if (isEditing) {
       expenseContext.updateExpense(editedExpenseId, expenseData);
+      await updateExpense(editedExpenseId, expenseData);
     } else {
-      const id=await storeExpense(expenseData);
-      expenseContext.addExpense({...expenseData,id:id});
+      const id = await storeExpense(expenseData);
+      expenseContext.addExpense({ ...expenseData, id: id });
     }
     navigation.goBack();
   }
