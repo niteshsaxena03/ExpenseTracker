@@ -1,4 +1,4 @@
-import { useContext, useLayoutEffect } from "react";
+import { useContext, useLayoutEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import IconButton from "../components/UI/IconButton";
 import { GlobalStyles } from "../constants/styles";
@@ -6,6 +6,7 @@ import Button from "../components/UI/Button";
 import { ExpenseContext } from "../store/expenses-context";
 import ExpenseForm from "../components/ManageExpense/ExpenseForm";
 import { deleteExpense, storeExpense, updateExpense } from "../utils/http";
+import LoadingOverlay from "../components/UI/LoadingOverlay";
 
 function ManageExpense({ route, navigation }) {
   const expenseContext = useContext(ExpenseContext);
@@ -15,6 +16,8 @@ function ManageExpense({ route, navigation }) {
     (expense) => expense.id === editedExpenseId
   );
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   useLayoutEffect(() => {
     navigation.setOptions({
       title: isEditing ? "Edit expense" : "Add expense", //to dynamically set title based on conditions
@@ -22,6 +25,7 @@ function ManageExpense({ route, navigation }) {
   }, [navigation, isEditing]);
 
   async function deleteExpenseHandler() {
+    setIsSubmitting(true);
     expenseContext.deleteExpense(editedExpenseId);
     await deleteExpense(editedExpenseId);
     navigation.goBack(); //this will close the modal
@@ -30,6 +34,7 @@ function ManageExpense({ route, navigation }) {
     navigation.goBack(); //this will close the modal
   }
   async function confirmHandler(expenseData) {
+    setIsSubmitting(true);
     if (isEditing) {
       expenseContext.updateExpense(editedExpenseId, expenseData);
       await updateExpense(editedExpenseId, expenseData);
@@ -38,6 +43,10 @@ function ManageExpense({ route, navigation }) {
       expenseContext.addExpense({ ...expenseData, id: id });
     }
     navigation.goBack();
+  }
+
+  if (isSubmitting) {
+    return <LoadingOverlay />;
   }
   return (
     <View style={styles.container}>
