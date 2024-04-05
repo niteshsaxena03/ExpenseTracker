@@ -4,22 +4,38 @@ import { ExpenseContext } from "../store/expenses-context";
 import { getDateMinusDays } from "../utils/date";
 import { fetchExpenses } from "../utils/http";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
+import ErrorOverlay from "../components/UI/ErrorOverlay";
 
 function RecentExpenses() {
   const expensesContext = useContext(ExpenseContext);
   const [isFetching, setIsFetching] = useState(true);
+  const [error, setError] = useState();
 
   useEffect(() => {
     async function getExpenses() {
-      const expenses = await fetchExpenses();
-      expensesContext.setExpenses(expenses);
+      try {
+        const expenses = await fetchExpenses();
+        expensesContext.setExpenses(expenses);
+      } catch (error) {
+        setError("Could not fetch expenses");
+      }
+      setIsFetching(false);
+      
     }
-    setIsFetching(false);
+
     getExpenses();
   }, []);
 
-  if(isFetching){
-    return <LoadingOverlay/>
+  function errorHandler(){
+    setError(null);
+  }
+
+  if(error && !isFetching){
+    return <ErrorOverlay message={error} onConfirm={errorHandler}/>
+  }
+
+  if (isFetching) {
+    return <LoadingOverlay />;
   }
 
   //writing logic to get expenses of last 7 days
