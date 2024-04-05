@@ -28,12 +28,12 @@ function ManageExpense({ route, navigation }) {
   function cancelHandler() {
     navigation.goBack(); //this will close the modal
   }
-  function confirmHandler(expenseData) {
+  async function confirmHandler(expenseData) {
     if (isEditing) {
       expenseContext.updateExpense(editedExpenseId, expenseData);
     } else {
-      storeExpense(expenseData);
-      expenseContext.addExpense(expenseData);
+      const id=await storeExpense(expenseData);
+      expenseContext.addExpense({...expenseData,id:id});
     }
     navigation.goBack();
   }
